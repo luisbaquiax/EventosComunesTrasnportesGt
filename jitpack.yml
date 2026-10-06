@@ -1,0 +1,5 @@
+# JitPack compila con Java 8 por defecto; Spring Boot 4 necesita 17+ (usamos 21).
+jdk:
+  - openjdk21
+install:
+  - mvn -B -q install -DskipTests
