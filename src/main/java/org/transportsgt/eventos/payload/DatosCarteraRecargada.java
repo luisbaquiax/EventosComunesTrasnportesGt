@@ -14,6 +14,7 @@ public record DatosCarteraRecargada(
         UUID idCartera,
         UUID idUsuario,
         @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal monto,
+        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal saldoPosterior,
         LocalDate fechaRecarga
 ) {
 }

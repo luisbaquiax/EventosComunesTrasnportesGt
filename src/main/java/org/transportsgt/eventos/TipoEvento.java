@@ -1,30 +1,6 @@
 package org.transportsgt.eventos;
 
-import org.transportsgt.eventos.payload.DatosAlquilerCancelado;
-import org.transportsgt.eventos.payload.DatosAlquilerConfirmado;
-import org.transportsgt.eventos.payload.DatosAlquilerCotizado;
-import org.transportsgt.eventos.payload.DatosAlquilerSolicitado;
-import org.transportsgt.eventos.payload.DatosBoletosAnulados;
-import org.transportsgt.eventos.payload.DatosBus;
-import org.transportsgt.eventos.payload.DatosCarteraRecargada;
-import org.transportsgt.eventos.payload.DatosCarteraReembolsada;
-import org.transportsgt.eventos.payload.DatosChofer;
-import org.transportsgt.eventos.payload.DatosContrasenaCambiada;
-import org.transportsgt.eventos.payload.DatosDepreciacion;
-import org.transportsgt.eventos.payload.DatosEnlaceContrasena;
-import org.transportsgt.eventos.payload.DatosGastoCombustible;
-import org.transportsgt.eventos.payload.DatosGastoTaller;
-import org.transportsgt.eventos.payload.DatosLlegada;
-import org.transportsgt.eventos.payload.DatosPagoChofer;
-import org.transportsgt.eventos.payload.DatosRuta;
-import org.transportsgt.eventos.payload.DatosRutaEliminada;
-import org.transportsgt.eventos.payload.DatosSalida;
-import org.transportsgt.eventos.payload.DatosSucursal;
-import org.transportsgt.eventos.payload.DatosTarifaDepreciacion;
-import org.transportsgt.eventos.payload.DatosUsuario;
-import org.transportsgt.eventos.payload.DatosVentaBoletos;
-import org.transportsgt.eventos.payload.DatosViaje;
-import org.transportsgt.eventos.payload.DatosViajeEliminado;
+import org.transportsgt.eventos.payload.*;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -60,6 +36,7 @@ public enum TipoEvento {
     BOLETOS_ANULADOS("BoletosAnulados", Productor.BOLETOS, "boletos.venta.anulada", DatosBoletosAnulados.class),
     CARTERA_RECARGADA("CarteraRecargada", Productor.CARTERA, "cartera.cartera.recargada", DatosCarteraRecargada.class),
     CARTERA_REEMBOLSADA("CarteraReembolsada", Productor.CARTERA, "cartera.cartera.reembolsada", DatosCarteraReembolsada.class),
+    PERFIL_CLIENTE_ACTUALIZADO("PerfilClienteActualizado", Productor.CARTERA, "cartera.cliente.actualizado", DatosPerfilClienteActualizado.class),
     ALQUILER_SOLICITADO("AlquilerSolicitado", Productor.ALQUILERES, "alquileres.alquiler.solicitado", DatosAlquilerSolicitado.class),
     ALQUILER_COTIZADO("AlquilerCotizado", Productor.ALQUILERES, "alquileres.alquiler.cotizado", DatosAlquilerCotizado.class),
     ALQUILER_CONFIRMADO("AlquilerConfirmado", Productor.ALQUILERES, "alquileres.alquiler.confirmado", DatosAlquilerConfirmado.class),
@@ -85,41 +62,21 @@ public enum TipoEvento {
         this.clasePayload = clasePayload;
     }
 
-    /**
-     * Valor del campo {@code tipoEvento} del sobre, p. ej. {@code ViajeProgramado}.
-     */
-    public String nombre() {
-        return nombre;
-    }
+    /** Valor del campo {@code tipoEvento} del sobre, p. ej. {@code ViajeProgramado}. */
+    public String nombre() { return nombre; }
 
-    public Productor productor() {
-        return productor;
-    }
+    public Productor productor() { return productor; }
 
-    /**
-     * Llave de ruteo {@code {servicio}.{agregado}.{acción}}.
-     */
-    public String llaveRuteo() {
-        return llaveRuteo;
-    }
+    /** Llave de ruteo {@code {servicio}.{agregado}.{acción}}. */
+    public String llaveRuteo() { return llaveRuteo; }
 
-    public Class<?> clasePayload() {
-        return clasePayload;
-    }
+    public Class<?> clasePayload() { return clasePayload; }
 
-    /**
-     * Segundo segmento de la llave de ruteo (usuario, viaje, venta...). Se guarda como {@code tipo_agregado}.
-     */
-    public String tipoAgregado() {
-        return llaveRuteo.split("\\.")[1];
-    }
+    /** Segundo segmento de la llave de ruteo (usuario, viaje, venta...). Se guarda como {@code tipo_agregado}. */
+    public String tipoAgregado() { return llaveRuteo.split("\\.")[1]; }
 
-    /**
-     * Versión del contrato (solo se agregan campos; un cambio incompatible crea un tipo nuevo).
-     */
-    public int versionContrato() {
-        return 1;
-    }
+    /** Versión del contrato (solo se agregan campos; un cambio incompatible crea un tipo nuevo). */
+    public int versionContrato() { return 1; }
 
     public static Optional<TipoEvento> deNombre(String nombre) {
         return Optional.ofNullable(POR_NOMBRE.get(nombre));

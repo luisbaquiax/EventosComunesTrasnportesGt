@@ -5,13 +5,14 @@ Librería compartida de los microservicios de la plataforma de transporte. Conti
 | Qué | Dónde |
 |---|---|
 | Sobre común del evento | `SobreEvento<T>` |
-| Los 31 tipos de evento (nombre, productor, llave de ruteo, payload) | `TipoEvento`, `Productor` |
+| Los 32 tipos de evento (nombre, productor, llave de ruteo, payload) | `TipoEvento`, `Productor` |
+| Normalización del NIT (`Nit.normalizar()`, `CF` reservado al mostrador) | `Nit` |
 | Payloads (records) y enumeraciones del catálogo | paquete `payload` |
 | Outbox transaccional (guardar + publicar + limpiar) | `RegistroOutbox`, `PublicadorOutbox` |
 | Consumidor idempotente con reintentos y DLQ | `ManejadorEvento`, `DespachadorEventos` |
 | Exchanges, colas, enlaces y DLQ de RabbitMQ | se crean solos a partir de los manejadores |
 
-Fuente de verdad del contrato: `catalogo-eventos-es-v3.md`. Si un payload cambia, se cambia primero allí y luego aquí.
+Fuente de verdad del contrato: `catalogo-eventos-es-v4.md`. Si un payload cambia, se cambia primero allí y luego aquí.
 
 ## 1. Usarla en un microservicio
 
@@ -26,9 +27,9 @@ Fuente de verdad del contrato: `catalogo-eventos-es-v3.md`. Si un payload cambia
 </repositories>
 
 <dependency>
-    <groupId>com.github.luisbaquiax</groupId>
+    <groupId>com.github.TU_USUARIO</groupId>
     <artifactId>eventos-comun</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -42,14 +43,14 @@ Clase principal:
 public class BoletosApplication { ... }
 ```
 
-`application.yml` (mínimo; ver `application-eventos.properties` en este repo para la versión completa con reintentos):
+`application.properties` (mínimo; ver `application-eventos.properties` en este repo para la versión completa con reintentos):
 
-```yaml
-eventos:
-  servicio: boletos        # nombre corto: prefijo de las colas y valor de evento_procesado.consumidor
+```properties
+# nombre corto: prefijo de las colas y valor de evento_procesado.consumidor
+eventos.servicio=boletos
 ```
 
-Tablas: `outbox_evento` y `evento_procesado` van en la migración Flyway de cada servicio (definidas en `modelo-datos-postgresql-v3.md`, «Tablas comunes»).
+Tablas: `outbox_evento` y `evento_procesado` van en la migración Flyway de cada servicio (definidas en `modelo-datos-postgresql-v4.md`, «Tablas comunes»).
 
 ## 2. Publicar un evento (productor)
 
@@ -109,13 +110,13 @@ La librería, por cada **productor** distinto entre tus manejadores, crea la col
 ## 4. Publicarla en JitPack
 
 1. Sube **solo esta carpeta** como un repositorio **público** de GitHub (por ejemplo `eventos-comun`). JitPack compila desde la raíz del repo y `jitpack.yml` ya fija Java 21.
-2. En GitHub: *Releases → Create a new release* con el tag `1.0.0`.
-3. Entra a `https://jitpack.io/#TU_USUARIO/eventos-comun`, busca `1.0.0` y pulsa **Get it**; el *Log* muestra la compilación.
-4. Las coordenadas son `com.github.TU_USUARIO:eventos-comun:1.0.0` (JitPack ignora el `groupId` del pom).
+2. En GitHub: *Releases → Create a new release* con el tag `1.1.0`.
+3. Entra a `https://jitpack.io/#TU_USUARIO/eventos-comun`, busca `1.1.0` y pulsa **Get it**; el *Log* muestra la compilación.
+4. Las coordenadas son `com.github.TU_USUARIO:eventos-comun:1.1.0` (JitPack ignora el `groupId` del pom).
 5. Un tag publicado no se modifica: para cambiar algo se publica `1.0.1` y se sube la versión en cada servicio. Para desarrollar rápido puede usarse `main-SNAPSHOT`, pero no lo dejes así en la entrega.
 6. Antes de la entrega, compila una vez cada versión que usarás para que JitPack la tenga en caché.
 
-Plan B (sin JitPack): `mvn install` en esta carpeta y usar `org.transportsgt:eventos-comun:1.0.0` desde el `~/.m2` local. En Docker/Cloud Run no sirve, porque el contenedor no tiene tu `.m2`.
+Plan B (sin JitPack): `mvn install` en esta carpeta y usar `org.transportsgt:eventos-comun:1.1.0` desde el `~/.m2` local. En Docker/Cloud Run no sirve, porque el contenedor no tiene tu `.m2`.
 
 ## 5. Pruebas
 
@@ -123,7 +124,7 @@ Plan B (sin JitPack): `mvn install` en esta carpeta y usar `org.transportsgt:eve
 mvn test
 ```
 
-`TipoEventoTest` verifica los 31 tipos (nombres y llaves únicos, cantidad por productor) y `ConvertidorEventosTest` verifica ida y vuelta del sobre, dinero como texto, campos desconocidos y mensajes inválidos.
+`TipoEventoTest` verifica los 32 tipos (nombres y llaves únicos, cantidad por productor) y `ConvertidorEventosTest` verifica ida y vuelta del sobre, dinero como texto, campos desconocidos y mensajes inválidos.
 
 ## 6. Límites conocidos
 

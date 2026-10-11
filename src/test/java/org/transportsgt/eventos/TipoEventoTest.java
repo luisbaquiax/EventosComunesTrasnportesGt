@@ -1,26 +1,26 @@
 package org.transportsgt.eventos;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TipoEventoTest {
 
     @Test
-    void hay31TiposDeEvento() {
-        assertThat(TipoEvento.values()).hasSize(31);
+    void hay32TiposDeEvento() {
+        assertThat(TipoEvento.values()).hasSize(32);
     }
 
     @Test
     void nombresYLlavesDeRuteoSonUnicos() {
         Set<String> nombres = Arrays.stream(TipoEvento.values()).map(TipoEvento::nombre).collect(Collectors.toSet());
         Set<String> llaves = Arrays.stream(TipoEvento.values()).map(TipoEvento::llaveRuteo).collect(Collectors.toSet());
-        assertThat(nombres).hasSize(31);
-        assertThat(llaves).hasSize(31);
+        assertThat(nombres).hasSize(32);
+        assertThat(llaves).hasSize(32);
     }
 
     @Test
@@ -37,7 +37,7 @@ class TipoEventoTest {
         assertThat(contar(Productor.FLOTA)).isEqualTo(4);
         assertThat(contar(Productor.VIAJES)).isEqualTo(8);
         assertThat(contar(Productor.BOLETOS)).isEqualTo(2);
-        assertThat(contar(Productor.CARTERA)).isEqualTo(2);
+        assertThat(contar(Productor.CARTERA)).isEqualTo(3);
         assertThat(contar(Productor.ALQUILERES)).isEqualTo(4);
         assertThat(contar(Productor.COSTOS)).isEqualTo(5);
     }

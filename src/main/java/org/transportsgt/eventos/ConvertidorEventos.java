@@ -20,7 +20,7 @@ public class ConvertidorEventos {
     public record Crudo(
             UUID idEvento,
             String tipoEvento,
-            int versionEvento,
+            Integer versionEvento,
             Instant ocurridoEn,
             String servicioProductor,
             UUID idAgregado,
@@ -86,7 +86,8 @@ public class ConvertidorEventos {
         } catch (RuntimeException e) {
             throw new EventoInvalidoException("Payload inválido para " + crudo.tipoEvento() + ": " + e.getMessage(), e);
         }
-        return new SobreEvento<>(crudo.idEvento(), crudo.tipoEvento(), crudo.versionEvento(), crudo.ocurridoEn(),
+        int versionEvento = crudo.versionEvento() != null ? crudo.versionEvento() : 1;   // por omisión, contrato v1
+        return new SobreEvento<>(crudo.idEvento(), crudo.tipoEvento(), versionEvento, crudo.ocurridoEn(),
                 crudo.servicioProductor(), crudo.idAgregado(), crudo.versionAgregado(), crudo.idCorrelacion(), datos);
     }
 }

@@ -13,6 +13,7 @@ public record DatosCarteraReembolsada(
         UUID idCartera,
         UUID idUsuario,
         @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal monto,
+        @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal saldoPosterior,
         TipoReferencia tipoReferencia,
         UUID idReferencia,
         String motivo
