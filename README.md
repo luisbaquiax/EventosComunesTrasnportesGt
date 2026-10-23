@@ -4,10 +4,9 @@ Librería compartida de los microservicios de la plataforma de transporte.
 
 ## Organización del código
 
-El código fuente está agrupado físicamente por responsabilidad. Las declaraciones
-`package` se mantienen sin cambios para que los microservicios actuales conserven
-sus imports; por eso estas carpetas sirven para orientar la navegación, pero no
-representan paquetes Java nuevos.
+El código fuente y los paquetes Java están agrupados por responsabilidad. Los
+microservicios que usen esta versión deberán actualizar sus imports al nuevo
+tag; esta reorganización no modifica ningún microservicio de este workspace.
 
 | Carpeta | Responsabilidad |
 |---|---|
